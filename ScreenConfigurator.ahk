@@ -6,7 +6,7 @@ SetWorkingDir, %A_ScriptDir%
 
 global ScreenConfiguratorPID:= DllCall("GetCurrentProcessId")
 
-gui, Canvas:new, +LastFound -SysMenu -border -0xC00000
+gui, Canvas:new, +LastFound -SysMenu -border -0xC00000 +HWNDCanvasHWND
 Gui, Color , 000000
 
 SysGet, Monitor, monitor
@@ -19,8 +19,8 @@ Return
 
 ~LButton::
 MouseGetPos, OutputVarX, OutputVarY, OutputVarWin
-WinGet, WinPID, PID, ahk_ID %OutputVarWin%
-if (WinPID = ScreenConfiguratorPID)
+WinGet, WinCanvas, ID, ahk_ID %OutputVarWin%
+if (WinCanvas = CanvasHWND)
 {
     Gui, Canvas:add, button,% "h25 w25 x" (OutputVarX-12.5) " y" (OutputVarY-12.5)
 }
