@@ -18,6 +18,7 @@ Gui, show,x0 y0 w%MonitorRight% h%MonitorBottom%
 Return
 
 ~LButton::
+CoordMode, Mouse , Screen
 MouseGetPos, OutputVarX, OutputVarY, OutputVarWin
 WinGet, WinCanvas, ID, ahk_ID %OutputVarWin%
 if (WinCanvas = CanvasHWND)
