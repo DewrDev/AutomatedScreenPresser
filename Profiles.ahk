@@ -13,6 +13,7 @@ gui, font, cblack s25 bold
 gui, add, text, % "x0 w" ScreenPresser.Width " center", PROFILES
 gui, add, picture, % "h" (Height:=50) " y" 5 " w" (Width:=50) " x5" , resource\gfx\AddButton.png
 gui, add, picture, % "h" (Height:=50) " y" 5 " w" (Width:=50) " x" ((ScreenPresser.Width - Width)-5), resource\gfx\SettingsButton.png
+gui, add, picture, % "h" (Height:=50) " y" 5 " w" (Width:=50) " xp" -Width-5 , resource\gfx\HelpButton.png
 gui, add, text,% "x8 y+5 0x10 h1 w" ScreenPresser.Width-15 ;Divider
 gui, font, norm s20
 
