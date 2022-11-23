@@ -20,7 +20,7 @@ Gui, show,x0 y0 w%MonitorRight% h%MonitorBottom%
 global  CanvasControl:= {Height:100, Width:200}
 gui, CanvasControl:new, +AlwaysOnTop
 gui, add, text,% "x0 y0 w" CanvasControl.Width " center", Control
-gui, add, button,, Save
+gui, add, button,gSaveProfile, Save
 gui, add, button,, Undo
 gui, add, button,, Redo
 gui, add, button,gCanvasHotkeys, Hotkeys
@@ -88,3 +88,9 @@ F3: Redo
         gui, CanvasHotkeys:destroy
     }
 }
+
+SaveProfile:
+gui, Canvas:destroy
+gui, CanvasControl:destroy
+#include NewProfile.ahk
+return

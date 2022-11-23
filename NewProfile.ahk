@@ -20,6 +20,9 @@ gui, add, text,x5 y+10, Input Frequency(minute)
 gui, add,edit, x+3 w170
 gui, add, updown
 
+gui, add, text, x5 y+10, Touch Point Count: 
+gui, add, text, x+1 yp vTouchCount
+
 gui, add, button, % "h" (Height:=40) " w" (Width:=100) " y" (NewProfile.Height-Height)-10 " x" ((NewProfile.Width/2)-(Width/2) - (Width/2)), EDIT
 gui, add, button, % "h" Height " w" Width " y" (NewProfile.Height-Height)-10 " x+5", SAVE
 
