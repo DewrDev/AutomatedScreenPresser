@@ -7,7 +7,9 @@ SetWorkingDir, %A_ScriptDir%
 #include resource\gdip_ext.ahk
 Gdip_Startup()
 
+global  CanvasControl:= {Height:100, Width:200}
 global ScreenConfiguratorPID:= DllCall("GetCurrentProcessId")
+global InputPoints:=Array()
 
 gui, Canvas:new, +LastFound -SysMenu -border -0xC00000 +HWNDCanvasHWND
 Gui, Color , 000000
@@ -17,7 +19,6 @@ WinSet, Trans, 50
 global CanvasPositions:= {CanvasRight:MonitorRight, CanvasTop:MonitorTop}
 Gui, show,x0 y0 w%MonitorRight% h%MonitorBottom%
 
-global  CanvasControl:= {Height:100, Width:200}
 gui, CanvasControl:new, +AlwaysOnTop
 gui, add, text,% "x0 y0 w" CanvasControl.Width " center", Control
 gui, add, button,gSaveProfile, Save
@@ -32,11 +33,26 @@ Return
 CoordMode, Mouse , Screen
 MouseGetPos, OutputVarX, OutputVarY, OutputVarWin
 WinGet, WinCanvas, ID, ahk_ID %OutputVarWin%
+gui, Canvas:font, s15 cwhite norm
 if (WinCanvas = CanvasHWND)
 {
     Gui, Canvas:add, button,% "h25 w25 x" (OutputVarX-12.5) " y" (OutputVarY-12.5)
+    
+    gui, Canvas:add, text,x+1 yp, % AddPointToArray(OutputVarX, OutputVarY)
 }
 return
+
+AddPointToArray(X, Y)
+{
+    NewPointNum:=(InputPoints.Length())+1
+    Point%NewPointNum%Arr:= {X:X, Y:Y}
+    InputPoints.Push("Point" NewPointNum "Arr")
+
+GetPointFromInputPoints:= InputPoints[NewPointNum], LastPointX:= %GetPointFromInputPoints%["X"]
+msgbox, %LastPointX%
+
+    return InputPoints.Length()
+}
 
 CanvasGuiClose:
 Exitapp
