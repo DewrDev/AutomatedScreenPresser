@@ -10,6 +10,7 @@ Gdip_Startup()
 global  CanvasControl:= {Height:100, Width:200}
 global ScreenConfiguratorPID:= DllCall("GetCurrentProcessId")
 global InputPoints:=Array()
+global PointImageTxtIDs:= {}
 
 gui, Canvas:new, +LastFound -SysMenu -border -0xC00000 +HWNDCanvasHWND
 Gui, Color , 000000
@@ -22,7 +23,7 @@ Gui, show,x0 y0 w%MonitorRight% h%MonitorBottom%
 gui, CanvasControl:new, +AlwaysOnTop
 gui, add, text,% "x0 y0 w" CanvasControl.Width " center", Control
 gui, add, button,gSaveProfile, Save
-gui, add, button,, Undo
+gui, add, button,gUndoLastPoint, Undo
 gui, add, button,, Redo
 gui, add, button,gCanvasHotkeys, Hotkeys
 gui, show, % "w" CanvasControl.Width
@@ -36,11 +37,20 @@ WinGet, WinCanvas, ID, ahk_ID %OutputVarWin%
 gui, Canvas:font, s15 cwhite norm
 if (WinCanvas = CanvasHWND)
 {
-    Gui, Canvas:add, button,% "h25 w25 x" (OutputVarX-12.5) " y" (OutputVarY-12.5)
-    
-    gui, Canvas:add, text,x+1 yp, % AddPointToArray(OutputVarX, OutputVarY)
+    val:= AddPointToArray(OutputVarX, OutputVarY)
+    NUMBER:=TrackPointImagesandTexts(Val)
+    Gui, Canvas:add, button,% "h25 w25 x" (OutputVarX-12.5) " y" (OutputVarY-12.5) " vImage" NUMBER
+    gui, Canvas:add, text,x+1 yp vText%NUMBER%, % Val
 }
 return
+
+TrackPointImagesandTexts(PointNum)
+{
+    static Count:=0
+    ++Count
+    PointImageTxtIDs[PointNum]:=Count
+    return % Count
+}
 
 AddPointToArray(X, Y)
 {
@@ -49,9 +59,21 @@ AddPointToArray(X, Y)
     InputPoints.Push("Point" NewPointNum "Arr")
 
 GetPointFromInputPoints:= InputPoints[NewPointNum], LastPointX:= %GetPointFromInputPoints%["X"]
-msgbox, %LastPointX%
 
     return InputPoints.Length()
+}
+
+UndoLastPoint()
+{
+  RemovePointFromArray(InputPoints.Length())  
+
+}
+
+RemovePointFromArray(Point)
+{
+    InputPoints.RemoveAt(Point)
+    guicontrol, Canvas:hide, % "Image" PointImageTxtIDs[Point]
+    guicontrol, Canvas:hide, % "Text" PointImageTxtIDs[Point]
 }
 
 CanvasGuiClose:
