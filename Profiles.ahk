@@ -11,7 +11,7 @@ Profiles:= Array("doodar", "thingy", "wotsit")
 gui, Profiles:new, 
 gui, font, cblack s25 bold
 gui, add, text, % "x0 w" ScreenPresser.Width " center", PROFILES
-gui, add, picture, % "h" (Height:=50) " y" 5 " w" (Width:=50) " x5" , resource\gfx\AddButton.png
+gui, add, picture, % "h" (Height:=50) " y" 5 " w" (Width:=50) " x5 gNewProfile" , resource\gfx\AddButton.png
 gui, add, picture, % "h" (Height:=50) " y" 5 " w" (Width:=50) " x" ((ScreenPresser.Width - Width)-5), resource\gfx\SettingsButton.png
 gui, add, picture, % "h" (Height:=50) " y" 5 " w" (Width:=50) " xp" -Width-5 " gHelpPages" , resource\gfx\HelpButton.png
 gui, add, text,% "x8 y+5 0x10 h1 w" ScreenPresser.Width-15 ;Divider
@@ -27,10 +27,19 @@ Loop, % Profiles.Length()
 }
 
 gui,show, % "w" ScreenPresser.Width " h" ScreenPresser.Height, Profiles
-return
 
-ProfilesGuiclose:
-exitapp
+ProfilesGuiclose()
+{
+    exitapp
+}
 
-HelpPages:
-#include HelpPages.ahk
+HelpPages()
+{
+    #include HelpPages.ahk
+}
+
+NewProfile()
+{
+    gui, Profiles:minimize
+    ScreenConfigurator.BlankCanvas()
+}
