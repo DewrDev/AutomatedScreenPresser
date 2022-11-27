@@ -42,7 +42,7 @@ class ScreenConfigurator
         gui, Canvas:new, +LastFound -SysMenu -border -0xC00000 +HWNDCanvasHWND
         Gui, Color , 000000
         WinSet, Trans, 50
-        gui, CanvasControl:new, +AlwaysOnTop
+        gui, CanvasControl:new, +ownerCanvas
         gui, add, text,% "x0 y0 w" CanvasControl.Width " center", Control
         gui, add, button,gSaveProfile, Save
         gui, add, button,gUndoLastPoint, Undo
