@@ -7,28 +7,40 @@ SetWorkingDir, %A_ScriptDir%
 #include resource\gdip_ext.ahk
 Gdip_Startup()
 
-global  CanvasControl:= {Height:100, Width:200}
 global ScreenConfiguratorPID:= DllCall("GetCurrentProcessId")
 global InputPoints:=Array()
 global PointImageTxtIDs:= {}
-
-gui, Canvas:new, +LastFound -SysMenu -border -0xC00000 +HWNDCanvasHWND
-Gui, Color , 000000
-
 SysGet, Monitor, monitor
-WinSet, Trans, 50
-global CanvasPositions:= {CanvasRight:MonitorRight, CanvasTop:MonitorTop}
-Gui, show,x0 y0 w%MonitorRight% h%MonitorBottom%
+global CanvasPositions:= {CanvasRight:MonitorRight, CanvasTop:MonitorTop, Width:MonitorRight, Height:MonitorBottom}
+global CanvasControl:= {Height:100, Width:200}
 
-gui, CanvasControl:new, +AlwaysOnTop
-gui, add, text,% "x0 y0 w" CanvasControl.Width " center", Control
-gui, add, button,gSaveProfile, Save
-gui, add, button,gUndoLastPoint, Undo
-gui, add, button,, Redo
-gui, add, button,gCanvasHotkeys, Hotkeys
-gui, show, % "w" CanvasControl.Width
-CanvasHotkeys()
-Return
+global ScreenConfigurator:={}
+ScreenConfigurator.BlankCanvas:= Func("ScreenConfigurator")
+
+ScreenConfigurator()
+{
+    static CanvasExist
+    if (CanvasExist)
+    {
+    ShowCanvas()
+    }
+    else
+    {
+
+    gui, Canvas:new, +LastFound -SysMenu -border -0xC00000 +HWNDCanvasHWND
+    Gui, Color , 000000
+    WinSet, Trans, 50
+    gui, CanvasControl:new, +AlwaysOnTop
+    gui, add, text,% "x0 y0 w" CanvasControl.Width " center", Control
+    gui, add, button,gSaveProfile, Save
+    gui, add, button,gUndoLastPoint, Undo
+    gui, add, button,, Redo
+    gui, add, button,gCanvasHotkeys, Hotkeys
+    CanvasExist:=True
+    ShowCanvas()
+    CanvasHotkeys()
+    }
+}
 
 ~LButton::
 CoordMode, Mouse , Screen
@@ -76,10 +88,29 @@ RemovePointFromArray(Point)
     guicontrol, Canvas:hide, % "Text" PointImageTxtIDs[Point]
 }
 
-CanvasGuiClose:
-Exitapp
-CanvasControlGuiClose:
-Exitapp
+CanvasGuiClose()
+{
+    ExitCanvas()
+}
+CanvasControlGuiClose()
+{
+    ExitCanvas()
+}
+
+ExitCanvas()
+{
+    gui, Canvas:hide
+    gui, CanvasControl:hide
+    gui, CanvasHotkeys:hide
+}
+
+ShowCanvas()
+{
+    Gui, Canvas:show,% "x0 y0 w" CanvasPositions.Width " h" CanvasPositions.Height
+    gui, CanvasControl:show, % "w" CanvasControl.Width
+    gui, CanvasHotkeys:show
+
+}
 
 CanvasHotkeys()
 {
@@ -128,7 +159,6 @@ F3: Redo
 }
 
 SaveProfile:
-gui, Canvas:destroy
-gui, CanvasControl:destroy
+ExitCanvas()
 #include NewProfile.ahk
 return
