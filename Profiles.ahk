@@ -41,5 +41,5 @@ HelpPages()
 NewProfile()
 {
     gui, Profiles:minimize
-    ScreenConfigurator.BlankCanvas.Call()
+    ScreenConfigurator.BlankCanvas()
 }

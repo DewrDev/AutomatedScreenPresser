@@ -36,10 +36,11 @@ ConfirmProfileSave:
 GuiControlGet, ProfileName,, ProfileNameBox
 GuiControlGet, Interval,, IntervalBox
 GuiControlGet, Frequency,, FrequencyBox
-ProfileManager.Save.Call(ProfileName, Interval, Frequency, InputPoints)
+ProfileManager.Save(ProfileName, Interval, Frequency, InputPoints)
 return
 
 EditCanvas:
 gui, NewProfile: hide
-ScreenConfigurator.BlankCanvas.Call()
+; ScreenConfigurator.BlankCanvas()
+ScreenConfigurator.ShowCurrentCanvas()
 return

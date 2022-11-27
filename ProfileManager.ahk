@@ -4,22 +4,20 @@ SendMode, Input
 SetBatchLines, -1
 SetWorkingDir, %A_ScriptDir%
 
-ProfileManager:={}
-ProfileManager.Load:= Func("LoadProfile")
-ProfileManager.Save:= Func("SaveProfile")
-ProfileManager.Delete:= Func("DeleteProfile")
-
-LoadProfile()
+class ProfileManager
 {
+    LoadProfile()
+    {
 
-}
+    }
 
-SaveProfile(ProfileName, Interval, Frequency, InputPoints)
-{
-msgbox, e
-}
+    SaveProfile(ProfileName, Interval, Frequency, InputPoints)
+    {
+    msgbox, e
+    }
 
-DeleteProfile()
-{
+    DeleteProfile()
+    {
 
+    }
 }

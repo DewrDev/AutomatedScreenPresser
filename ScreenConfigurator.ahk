@@ -14,33 +14,50 @@ SysGet, Monitor, monitor
 global CanvasPositions:= {CanvasRight:MonitorRight, CanvasTop:MonitorTop, Width:MonitorRight, Height:MonitorBottom}
 global CanvasControl:= {Height:100, Width:200}
 
-global ScreenConfigurator:={}
-ScreenConfigurator.BlankCanvas:= Func("ScreenConfigurator")
-
-ScreenConfigurator()
+class ScreenConfigurator
 {
-    static CanvasExist
-    if (CanvasExist)
-    {
-    ShowCanvas()
-    }
-    else
-    {
 
-    gui, Canvas:new, +LastFound -SysMenu -border -0xC00000 +HWNDCanvasHWND
-    Gui, Color , 000000
-    WinSet, Trans, 50
-    gui, CanvasControl:new, +AlwaysOnTop
-    gui, add, text,% "x0 y0 w" CanvasControl.Width " center", Control
-    gui, add, button,gSaveProfile, Save
-    gui, add, button,gUndoLastPoint, Undo
-    gui, add, button,, Redo
-    gui, add, button,gCanvasHotkeys, Hotkeys
-    CanvasExist:=True
-    ShowCanvas()
-    CanvasHotkeys()
+    BlankCanvas()
+    {
+        ScreenConfigurator.ScreenConfigurator()
     }
+
+    ShowCurrentCanvas()
+    {
+        ScreenConfigurator.ScreenConfigurator(True)
+    }
+
+    ScreenConfigurator(ShowCurrent:=false)
+    {
+        static CanvasExist
+        if (CanvasExist && ShowCurrent)
+        {
+        ShowCanvas()
+        }
+        else
+        {
+            InputPoints:=Array()
+            PointImageTxtIDs:= {}
+        gui, Canvas:destroy
+        gui, Canvas:new, +LastFound -SysMenu -border -0xC00000 +HWNDCanvasHWND
+        Gui, Color , 000000
+        WinSet, Trans, 50
+        gui, CanvasControl:new, +AlwaysOnTop
+        gui, add, text,% "x0 y0 w" CanvasControl.Width " center", Control
+        gui, add, button,gSaveProfile, Save
+        gui, add, button,gUndoLastPoint, Undo
+        gui, add, button,, Redo
+        gui, add, button,gCanvasHotkeys, Hotkeys
+        CanvasExist:=True
+        ShowCanvas()
+        CanvasHotkeys()
+        }
+    }
+
+
+
 }
+
 
 ~LButton::
 CoordMode, Mouse , Screen
