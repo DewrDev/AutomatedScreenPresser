@@ -13,10 +13,10 @@ global PointImageTxtIDs:= {}
 SysGet, Monitor, monitor
 global CanvasPositions:= {CanvasRight:MonitorRight, CanvasTop:MonitorTop, Width:MonitorRight, Height:MonitorBottom}
 global CanvasControl:= {Height:100, Width:200}
+global CanvasHWND
 
 class ScreenConfigurator
 {
-
     BlankCanvas()
     {
         ScreenConfigurator.ScreenConfigurator()
@@ -54,24 +54,31 @@ class ScreenConfigurator
         }
     }
 
-
-
+    canvasClick()
+    {
+        MouseGetPos, OutputVarX, OutputVarY, OutputVarWin
+        WinGet, WinCanvas, ID, ahk_ID %OutputVarWin%
+        gui, Canvas:font, s15 cwhite norm
+        if (WinCanvas = CanvasHWND)
+        {
+            val:= AddPointToArray(OutputVarX, OutputVarY)
+            NUMBER:=TrackPointImagesandTexts(Val)
+            AddCanvasPoint(OutputVarX,OutputVarY,Number,Val)
+        }
+    }
 }
 
+Func := ScreenConfigurator.canvasClick.Bind(canvasClick)
 
-~LButton::
 CoordMode, Mouse , Screen
-MouseGetPos, OutputVarX, OutputVarY, OutputVarWin
-WinGet, WinCanvas, ID, ahk_ID %OutputVarWin%
-gui, Canvas:font, s15 cwhite norm
-if (WinCanvas = CanvasHWND)
+Hotkey, ~LButton , % Func, On
+
+AddCanvasPoint(x,y,number,val)
 {
-    val:= AddPointToArray(OutputVarX, OutputVarY)
-    NUMBER:=TrackPointImagesandTexts(Val)
-    Gui, Canvas:add, button,% "h25 w25 x" (OutputVarX-12.5) " y" (OutputVarY-12.5) " vImage" NUMBER
+    global
+    Gui, Canvas:add, button,% "h25 w25 x" (x-12.5) " y" (y-12.5) " vImage" NUMBER
     gui, Canvas:add, text,x+1 yp vText%NUMBER%, % Val
 }
-return
 
 TrackPointImagesandTexts(PointNum)
 {
@@ -83,11 +90,9 @@ TrackPointImagesandTexts(PointNum)
 
 AddPointToArray(X, Y)
 {
-    NewPointNum:=(InputPoints.Length())+1
-    Point%NewPointNum%Arr:= {X:X, Y:Y}
-    InputPoints.Push("Point" NewPointNum "Arr")
-
-GetPointFromInputPoints:= InputPoints[NewPointNum], LastPointX:= %GetPointFromInputPoints%["X"]
+    ; NewPointNum:=(InputPoints.Length())+1
+    ; InputPoints.Push("Point" NewPointNum "Arr")
+    InputPoints.Push(X "x" Y)
 
     return InputPoints.Length()
 }
