@@ -20,4 +20,12 @@ global PID:= DllCall("GetCurrentProcessId")
 
 #include Profiles.ahk
 #include ScreenConfigurator.ahkreturn
+Menu, Tray, Add, Profiles, Profiles
+Menu, Tray, Tip, ScreenPresser
+Menu, Tray, Click, 1
+Menu, Tray, Default , Profiles
+
+Profiles.ProfileWindow()
+return
+Profiles:
 Profiles.ProfileWindow()
