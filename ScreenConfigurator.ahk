@@ -175,7 +175,8 @@ F3: Redo
     }
 }
 
-SaveProfile:
-ExitCanvas()
-#include NewProfile.ahk
-return
+SaveProfile()
+{
+    ExitCanvas()
+    Profiles.NewProfile()
+}
