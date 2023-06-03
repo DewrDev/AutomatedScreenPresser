@@ -19,7 +19,7 @@ SetBatchLines, -1
 global PID:= DllCall("GetCurrentProcessId")
 
 #include Profiles.ahk
-#include ScreenConfigurator.ahkreturn
+#include ScreenConfigurator.ahk
 Menu, Tray, Add, Profiles, Profiles
 Menu, Tray, Tip, ScreenPresser
 Menu, Tray, Click, 1
